@@ -1,5 +1,7 @@
-# shell_tool
-积累一些常见的shell脚本工具
+# shell脚本工具箱
+
+###工具箱简介
+基于自己工作中和学习中的一些经历，将使用到的shell脚本进行一个总结。目标是逐渐完善成为一个开箱即用的shell工具集合
 
 #### 1、发现指定目录下的死链接 <a href="https://github.com/maweibinguo/shell_tool/blob/master/broken_link.sh">broken_link.sh</a>
 [ 功能说明 ] 
