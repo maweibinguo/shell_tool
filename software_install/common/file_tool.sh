@@ -33,3 +33,24 @@ function get_tar_top_dir()
     local package_name=$(tar -tf ${tar_name} |  awk -F "/" '{print $1}'|tail -n  1)
     echo $package_name
 }
+
+# 解压缩文件
+function decompress_file()
+{
+    local file_name=$1
+    if [ `file_exists $file_name` -eq 0 ]; then
+        echo  0
+    else
+        case $file_name in
+            *.tar.bz2)
+                tar jxvf $file_name
+            ;;
+            *.tar.gz)
+                tar xvzf $file_name
+            ;;
+             *)              
+               echo "$file_name cannot be extract"
+            ;; 
+        esac
+    fi 
+}

@@ -91,7 +91,8 @@ function install_php()
     local php_url=${php[0]}
     local php_install_path=${php[1]}
     local php_source_path=${php[2]}
-    local php_package_name=${php[3]}
+    local php_package_name=`echo ${php[3]}|sed 's|http://at2.php.net/get/\(.*\)/from/this.mirror|\1|'`
+
     if [ $(dir_exists ${php_install_path}) -eq 0 ] ;then
         mkdir -p $php_install_path
     fi
@@ -104,12 +105,12 @@ function install_php()
         download_to_target_palce "${php_url}" "${php_source_path}"
     fi
 
-    cd ${php_source_path}
     # 解压文件
+    cd ${php_source_path}
     local tar_source_package_name=$(echo $php_url|sed 's#.*/##g')
     if [ $(is_had_done 'php_source_package_path') -eq 0 ]; then
         mv ${tar_source_package_name} ${php_package_name}
-        tar -jxvf $php_package_name
+        decompress_file ${php_package_name}
     fi
 
     # 初始化依赖

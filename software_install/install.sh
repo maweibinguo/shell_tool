@@ -27,7 +27,9 @@ function install()
     software_name=$(str_to_lowercase ${software_name})
     case $software_name in
         mysql)
-
+            show_title " start to install mysql "
+            install_mysql
+            show_title " install mysql over "
             ;;
         php)
             show_title " start to install php "
@@ -35,13 +37,19 @@ function install()
             show_title " install php over "
             ;;
         nginx)
-
+            show_title " start to install nginx "
+            install_nginx
+            show_title " install nginx over "
             ;;
         redis)
-
+            show_title " start to install redis "
+            install_redis
+            show_title " install redis over "
             ;;
         supervisord)
-
+            show_title " start to install nginx "
+            install_supervisord
+            show_title " install nginx over "
             ;;
         *)
             echo 
