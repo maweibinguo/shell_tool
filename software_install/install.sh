@@ -12,6 +12,7 @@ network_tool=${root_dir}'/common/network_tool.sh'
 string_tool=${root_dir}'/common/string_tool.sh'
 error_tool=${root_dir}'/common/show_notice.sh'
 php_install=${root_dir}'/php-install/install.sh'
+nginx_install=${root_dir}'/nginx-install/install.sh'
 
 # 加载文件
 source $config_file_path 
@@ -20,6 +21,7 @@ source $network_tool
 source $string_tool
 source $error_tool
 source $php_install
+source $nginx_install
 
 function install()
 {
