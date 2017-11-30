@@ -46,9 +46,21 @@ mysql[0]="http://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-boost-5.7.10.tar.gz
 # mysql 安装地址
 mysql[1]="/usr/local/mysql/5.7/"
 
-# mysql 安装地址
+# mysql 源码包存放地址
 mysql[2]="/usr/local/src/mysql/"
 
-# cmake 安装地址 
+# cmake 下载地址
 mysql[3]="https://cmake.org/files/v3.4/cmake-3.4.1.tar.gz"
 
+#############
+# redis配置 # 
+#############
+
+# redis 源码包下载地址
+redis[0]="http://download.redis.io/releases/redis-3.2.9.tar.gz"
+
+# redis 安装路径
+redis[1]="/usr/local/redis/3.2.9/"
+
+# redis 存放地址
+redis[2]="/usr/local/src/redis/"

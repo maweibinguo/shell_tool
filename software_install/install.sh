@@ -14,6 +14,7 @@ error_tool=${root_dir}'/common/show_notice.sh'
 php_install=${root_dir}'/php-install/install.sh'
 nginx_install=${root_dir}'/nginx-install/install.sh'
 mysql_install=${root_dir}'/mysql-install/install.sh'
+redis_install=${root_dir}'/redis-install/install.sh'
 
 # 加载文件
 source $config_file_path 
@@ -24,6 +25,7 @@ source $error_tool
 source $php_install
 source $nginx_install
 source $mysql_install
+source $redis_install
 
 function install()
 {
@@ -49,6 +51,7 @@ function install()
             show_title " start to install redis "
             install_redis
             show_title " install redis over "
+            show_title " now you can execute 'service redisd start' command to start redis "
             ;;
         supervisord)
             show_title " start to install nginx "
