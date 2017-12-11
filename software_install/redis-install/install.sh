@@ -66,7 +66,7 @@ function install_redis()
     fi
 
     # 初始化依赖
-    if [ $(is_had_done 'init_redis_base_dependences') -eq 0 ]; then
+    if [ $(is_had_done 'redis_init_base_dependences') -eq 0 ]; then
        init_redis_base_dependences 
     fi
 

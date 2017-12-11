@@ -67,15 +67,15 @@ function install_nginx()
 
     local package_name_nginx=$(tar -tf ${tar_source_package_name_nginx} |  awk -F "/" '{print $1}'|tail -n  1)
     local package_name_pcre=$(tar -tf ${tar_source_package_name_pcre} |  awk -F "/" '{print $1}'|tail -n  1)
-    if [ $(is_had_done 'compile_pcre') -eq 0 ]; then
+    if [ $(is_had_done 'nginx_compile_pcre') -eq 0 ]; then
         compile_pcre ${nginx_source_path}${package_name_pcre}
     fi
 
-    if [ $(is_had_done 'init_nginx_base_dependences') -eq 0 ]; then
+    if [ $(is_had_done 'nginx_init_base_dependences') -eq 0 ]; then
         init_nginx_base_dependences
     fi
 
-    if [ $(is_had_done 'compile_nginx') -eq 0 ]; then
+    if [ $(is_had_done 'nginx_compile') -eq 0 ]; then
         compile_nginx ${nginx_source_path}${package_name_nginx} ${nginx_source_path}${package_name_pcre}
     fi
 }

@@ -115,13 +115,13 @@ function install_php()
 
     # 初始化依赖
     local source_package_name=$(get_tar_top_dir ${php_package_name})
-    if [ $(is_had_done 'init_php_base_dependences') -eq 0 ]; then
+    if [ $(is_had_done 'php_init_base_dependences') -eq 0 ]; then
         init_php_base_dependences
     fi
 
     # 编译安装
     local source_package_path="${php_source_path}${source_package_name}"
-    if [ $(is_had_done 'compile_php') -eq 0 ]; then
+    if [ $(is_had_done 'php_compile') -eq 0 ]; then
         compile_php "${source_package_path}" "${php_install_path}"
     fi
 }
