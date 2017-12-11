@@ -36,6 +36,7 @@ function install()
             show_title " start to install mysql "
             install_mysql
             show_title " install mysql over "
+            show_title " now you can execute 'service mysqld start' command to start redis "
             ;;
         php)
             show_title " start to install php "
@@ -54,6 +55,8 @@ function install()
             show_title " now you can execute 'service redisd start' command to start redis "
             ;;
         supervisord)
+	    show_title "Program is Develeping , Please Waiter"
+	    exit 1
             show_title " start to install nginx "
             install_supervisord
             show_title " install nginx over "

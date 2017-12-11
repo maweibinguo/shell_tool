@@ -111,10 +111,10 @@ function install_mysql()
     fi
 
     if [ $(is_had_done 'mysql_compile') -eq 0 ]; then
-        compile_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path}${package_name_mysql}
+        compile_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path}
     fi
 
     if [ $(is_had_done 'mysql_config') -eq 0 ]; then
-        config_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path}${package_name_mysql}
+        config_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path}
     fi
 }
