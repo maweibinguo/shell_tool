@@ -29,7 +29,7 @@ function is_had_done()
    if [ $(file_exists "${full_step}") -eq 1 ]; then
         echo 1
    else
-        touch ${step_name}
+        touch ${full_step}
         echo 0
    fi
 }
