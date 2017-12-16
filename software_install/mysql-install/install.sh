@@ -5,54 +5,83 @@
 ####################################
 
 # 初始化基础的依赖
-function init_php_base_dependences()
+function init_mysql_base_dependences()
 {
-    yum install -y gcc gcc-c++ ncurses-devel perl
+    yum -y install gcc gcc-c++ openssl openssl-devel ncurses ncurses-devel
     return 1
 }
 
 # 开始编译php
-function compile_php()
+function compile_mysql()
 {
+    local source_path=$1
+    local install_path=${2}
+    cd ${source_path}
+   cmake \
+    -DCMAKE_INSTALL_PREFIX=${source_path} \
+    -DMYSQL_UNIX_ADDR=${source_path}mysql.sock \
+    -DWITH_INNOBASE_STORAGE_ENGINE=1 \
+    -DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+    -DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+    -DMYSQL_DATADIR=${source_path}data \
+    -DMYSQL_TCP_PORT=3306 \
+    -DWITH_BOOST=boost 
+}
+
+# 开始编译cmake
+function compile_cmake()
+{
+    local source_path=${1}
+    cd $source_path
+    ./bootstrap
+    make && make install
+    return 1
 }
 
 # 安装
-function install_php()
+function install_mysql()
 {
-    local php_url=${php[0]}
-    local php_install_path=${php[1]}
-    local php_source_path=${php[2]}
-    local php_package_name=`echo ${php[3]}|sed 's|http://at2.php.net/get/\(.*\)/from/this.mirror|\1|'`
-
-    if [ $(dir_exists ${php_install_path}) -eq 0 ] ;then
-        mkdir -p $php_install_path
+    local mysql_url=${mysql[0]}
+    local mysql_install_path=${mysql[1]}
+    local mysql_source_path=${mysql[2]}
+    local cmake_url=${mysql[3]}
+    if [ $(dir_exists ${mysql_install_path}) -eq 0 ] ;then
+        mkdir -p $mysql_install_path
     fi
 
-    if [ $(dir_exists ${php_source_path}) -eq 0 ]; then
-        mkdir -p $php_source_path
+    if [ $(dir_exists ${mysql_source_path}) -eq 0 ]; then
+        mkdir -p $mysql_source_path
     fi
 
-    if [ $(is_had_done 'php_url') -eq 0  ]; then
-        download_to_target_palce "${php_url}" "${php_source_path}"
+    if [ $(is_had_done 'mysql_cmake_url') -eq 0  ]; then
+        download_to_target_palce "${cmake_url}" "${mysql_source_path}"
+    fi
+    if [ $(is_had_done 'mysql_url') -eq 0  ]; then
+        download_to_target_palce "${mysql_url}" "${mysql_source_path}"
     fi
 
-    cd ${php_source_path}
-    # 解压文件
-    local tar_source_package_name=$(echo $php_url|sed 's#.*/##g')
-    if [ $(is_had_done 'php_source_package_path') -eq 0 ]; then
-        mv ${tar_source_package_name} ${php_package_name}
-        tar -jxvf $php_package_name
+    cd ${mysql_source_path}
+    local tar_source_package_name_mysql=$(echo ${mysql_url}|sed 's#.*/##g')
+    local tar_source_package_name_cmake=$(echo ${cmake_url}|sed 's#.*/##g')
+    if [ $(is_had_done 'mysql_source_path') -eq 0 ]; then
+        decompress_file $tar_source_package_name_mysql
     fi
 
-    # 初始化依赖
-    local source_package_name=$(get_tar_top_dir ${php_package_name})
-    if [ $(is_had_done 'init_php_base_dependences') -eq 0 ]; then
-        init_php_base_dependences
+    if [ $(is_had_done 'mysql_cmake_source_path') -eq 0 ]; then
+        decompress_file $tar_source_package_name_cmake
     fi
 
-    # 编译安装
-    local source_package_path="${php_source_path}${source_package_name}"
-    if [ $(is_had_done 'compile_php') -eq 0 ]; then
-        compile_php "${source_package_path}" "${php_install_path}"
+    if [ $(is_had_done 'init_mysql_base_dependences') -eq 0 ]; then
+        init_mysql_base_dependences
+    fi
+
+    local package_name_mysql=$(tar -tf ${tar_source_package_name_mysql} |  awk -F "/" '{print $1}'|tail -n  1)
+    local package_name_cmake=$(tar -tf ${tar_source_package_name_cmake} |  awk -F "/" '{print $1}'|tail -n  1)
+    if [ $(is_had_done 'mysql_compile_cmake') -eq 0 ]; then
+        compile_cmake ${mysql_source_path}${package_name_cmake}
+    fi
+
+    if [ $(is_had_done 'mysql_compile') -eq 0 ]; then
+        compile_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path}${package_name_mysql}
     fi
 }

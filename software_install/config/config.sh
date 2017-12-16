@@ -39,3 +39,16 @@ nginx[3]="http://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.
 #############
 # mysql配置 # 
 #############
+
+# mysql 下载地址
+mysql[0]="http://dev.mysql.com/get/Downloads/MySQL-5.7/mysql-boost-5.7.10.tar.gz"
+
+# mysql 安装地址
+mysql[1]="/usr/local/mysql/5.7/"
+
+# mysql 安装地址
+mysql[2]="/usr/local/src/mysql/"
+
+# cmake 安装地址 
+mysql[3]="https://cmake.org/files/v3.4/cmake-3.4.1.tar.gz"
+
