@@ -81,7 +81,7 @@ function install_mysql()
         compile_cmake ${mysql_source_path}${package_name_cmake}
     fi
 
-    if [ $(is_had_done 'mysql_compile') -eq 0 ]; then
+    #if [ $(is_had_done 'mysql_compile') -eq 0 ]; then
         compile_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path}${package_name_mysql}
-    fi
+    #fi
 }

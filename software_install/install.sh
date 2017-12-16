@@ -13,7 +13,7 @@ string_tool=${root_dir}'/common/string_tool.sh'
 error_tool=${root_dir}'/common/show_notice.sh'
 php_install=${root_dir}'/php-install/install.sh'
 nginx_install=${root_dir}'/nginx-install/install.sh'
-mysql_install=${root_dir}'/nginx-install/install.sh'
+mysql_install=${root_dir}'/mysql-install/install.sh'
 
 # 加载文件
 source $config_file_path 
