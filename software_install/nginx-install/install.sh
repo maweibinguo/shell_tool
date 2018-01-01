@@ -32,6 +32,21 @@ function compile_nginx()
     make && make install
 }
 
+# 配置nginx
+function config_nginx()
+{
+    local source_path=$1
+    local install_path=${2}
+
+    # 账户
+    groupadd nginx
+    useradd -r -g nginx nginx
+
+    #改变权限
+    chown -R nginx.nginx ${install_path}
+    chmod -R 755 ${install_path}
+}
+
 # 安装
 function install_nginx()
 {
@@ -76,6 +91,10 @@ function install_nginx()
     fi
 
     if [ $(is_had_done 'nginx_compile') -eq 0 ]; then
+        compile_nginx ${nginx_source_path}${package_name_nginx} ${nginx_source_path}${package_name_pcre}
+    fi
+
+    if [ $(is_had_done 'nginx_config') -eq 0 ]; then
         compile_nginx ${nginx_source_path}${package_name_nginx} ${nginx_source_path}${package_name_pcre}
     fi
 }

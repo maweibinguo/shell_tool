@@ -54,7 +54,8 @@ function config_mysql()
     useradd -r -g mysql mysql
 
     #改变权限
-    chown -R mysql:mysql ${install_path}
+    chown -R mysql.mysql ${install_path}
+    chmod -R 755 ${install_path}
 
     # 初始化账号
     ${install_path}/bin/mysqld --initialize --user=mysql
