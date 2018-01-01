@@ -37,6 +37,9 @@ function config_redis()
     cp ./utils/redis_init_script /etc/init.d/redisd
     ln -s ${redis_install_path}/bin/redis-cli /usr/local/bin/redis-cli
     ln -s ${redis_install_path}/bin/redis-server /usr/local/bin/redis-server
+
+    # 启动redis为守护进程
+    sed -i "s/daemonize *no/#daemonize no\ndaemonize yes/g" `grep '^daemonize *no' -rl /etc/redis/6379.conf`
 }
 
 # 安装
