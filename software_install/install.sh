@@ -42,6 +42,8 @@ function install()
             show_title " start to install php "
             install_php
             show_title " install php over "
+            show_title " now you can execute 'service php-fpmd start' command to start php-fpm "
+
             ;;
         nginx)
             show_title " start to install nginx "

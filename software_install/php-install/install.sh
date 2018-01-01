@@ -85,6 +85,28 @@ function compile_php()
     return 1
 }
 
+# 配置安装
+function config_php()
+{
+    local source_package_path=$1
+    local php_install_path=$2
+
+    # 更改php-fpm的配置
+    mv ${php_install_path}/etc/php-fpm.conf.default ${php_install_path}/etc/php-fpm.conf
+
+    # 更改fast-cgi进程池名称
+    mv ${php_install_path}/etc/php-fpm.d/www.conf.default ${php_install_path}/etc/php-fpm.d/www.conf
+
+    # 账户
+    groupadd deployer
+    useradd -r -g deployer deployer
+    
+    # 添加管理php服务的脚本
+    local manage_script='/etc/init.d/php-fpmd'
+    cp -r ${source_package_path}/sapi/fpm/init.d.php-fpm ${manage_script}
+    chmod +x ${manage_script}
+}
+
 # 安装
 function install_php()
 {
@@ -123,5 +145,12 @@ function install_php()
     local source_package_path="${php_source_path}${source_package_name}"
     if [ $(is_had_done 'php_compile') -eq 0 ]; then
         compile_php "${source_package_path}" "${php_install_path}"
+    fi
+
+    # 配置
+    if [ $(is_had_done 'php_config') -eq 0 ]; then
+        set -x
+        config_php "${source_package_path}" "${php_install_path}"
+        set +x
     fi
 }
