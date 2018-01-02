@@ -4,6 +4,20 @@
 # lamp安装的配置文件               #
 ####################################
 
+#############
+# git配置 # 
+#############
+
+# git 源码包下载地址
+git[0]="https://github.com/git/git/archive/v2.4.0.tar.gz"
+
+# redis 安装路径
+git[1]="/usr/local/git/v2.4.0/"
+
+# redis 存放地址
+git[2]="/usr/local/src/git/"
+
+
 ############
 # php配置 # 
 ############

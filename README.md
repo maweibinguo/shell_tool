@@ -18,10 +18,10 @@
 
 ./broken_link.sh /usr/local /var/data
 
-#### 2、搭建mysql \ nginx \ php \ redis 的开发环境<a href="https://github.com/maweibinguo/shell_tool/blob/master/software_install/install.sh">install.sh</a>
+#### 2、搭建git \ mysql \ nginx \ php \ redis 的开发环境<a href="https://github.com/maweibinguo/shell_tool/blob/master/software_install/install.sh">install.sh</a>
 [ 功能说明 ] 
 
-实现mysql \ nginx \ php \ redis 服务的脚本化安装. 目前不支持批量服务安装,如同时安装 mysql php
+实现git \ mysql \ nginx \ php \ redis 服务的脚本化安装. 目前不支持批量服务安装,如同时安装 mysql php
 
 安装环境：CentOS release 6.7 (Final)
 
