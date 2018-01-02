@@ -7,7 +7,7 @@
 # 校验网络
 function check_network()
 {
-    lose_rate=$(ping -c www.baidu.com | awk '/packet loss/print $6' | sed -e 's/%//')
+    lose_rate=$(ping -c 4 www.baidu.com | awk '/packet loss/print $6' | sed -e 's/%//')
     if [ $lose_rate -ne 0 ]; then
         echo "The Network Is Wrong"
         exit 1
