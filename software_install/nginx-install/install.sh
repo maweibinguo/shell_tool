@@ -63,38 +63,38 @@ function install_nginx()
     fi
 
     if [ $(is_had_done 'nginx_pcre_url') -eq 0  ]; then
-        download_to_target_palce "${pcre_url}" "${nginx_source_path}"
+        download_to_target_palce "${pcre_url}" "${nginx_source_path}" || rollback nginx_pcre_url
     fi
     if [ $(is_had_done 'nginx_url') -eq 0  ]; then
-        download_to_target_palce "${nginx_url}" "${nginx_source_path}"
+        download_to_target_palce "${nginx_url}" "${nginx_source_path}" || rollback nginx_url
     fi
 
     cd ${nginx_source_path}
     local tar_source_package_name_nginx=$(echo ${nginx_url}|sed 's#.*/##g')
     local tar_source_package_name_pcre=$(echo ${pcre_url}|sed 's#.*/##g')
     if [ $(is_had_done 'nginx_source_path') -eq 0 ]; then
-        decompress_file $tar_source_package_name_nginx
+        decompress_file $tar_source_package_name_nginx || rollback nginx_source_path
     fi
 
     if [ $(is_had_done 'nginx_pcre_source_path') -eq 0 ]; then
-        decompress_file $tar_source_package_name_pcre
+        decompress_file $tar_source_package_name_pcre || rollback nginx_pcre_source_path
     fi
 
     local package_name_nginx=$(tar -tf ${tar_source_package_name_nginx} |  awk -F "/" '{print $1}'|tail -n  1)
     local package_name_pcre=$(tar -tf ${tar_source_package_name_pcre} |  awk -F "/" '{print $1}'|tail -n  1)
     if [ $(is_had_done 'nginx_compile_pcre') -eq 0 ]; then
-        compile_pcre ${nginx_source_path}${package_name_pcre}
+        compile_pcre ${nginx_source_path}${package_name_pcre} || rollback nginx_compile_pcre
     fi
 
     if [ $(is_had_done 'nginx_init_base_dependences') -eq 0 ]; then
-        init_nginx_base_dependences
+        init_nginx_base_dependences || rollback nginx_init_base_dependences
     fi
 
     if [ $(is_had_done 'nginx_compile') -eq 0 ]; then
-        compile_nginx ${nginx_source_path}${package_name_nginx} ${nginx_source_path}${package_name_pcre}
+        compile_nginx ${nginx_source_path}${package_name_nginx} ${nginx_source_path}${package_name_pcre} || rollback nginx_compile
     fi
 
     if [ $(is_had_done 'nginx_config') -eq 0 ]; then
-        compile_nginx ${nginx_source_path}${package_name_nginx} ${nginx_source_path}${package_name_pcre}
+        compile_nginx ${nginx_source_path}${package_name_nginx} ${nginx_source_path}${package_name_pcre} || rollback nginx_config
     fi
 }

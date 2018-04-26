@@ -10,22 +10,26 @@ config_file_path=${root_dir}'/config/config.sh'
 file_tool=${root_dir}'/common/file_tool.sh'
 network_tool=${root_dir}'/common/network_tool.sh'
 string_tool=${root_dir}'/common/string_tool.sh'
+user_tool=${root_dir}'/common/user_tool.sh'
 error_tool=${root_dir}'/common/show_notice.sh'
 php_install=${root_dir}'/php-install/install.sh'
 nginx_install=${root_dir}'/nginx-install/install.sh'
 mysql_install=${root_dir}'/mysql-install/install.sh'
 redis_install=${root_dir}'/redis-install/install.sh'
+beanstalkd_install=${root_dir}'/beanstalkd-install/install.sh'
 
 # 加载文件
 source $config_file_path 
 source $file_tool 
 source $network_tool 
 source $string_tool
+source $user_tool
 source $error_tool
 source $php_install
 source $nginx_install
 source $mysql_install
 source $redis_install
+source $beanstalkd_install
 
 function install()
 {
@@ -57,11 +61,14 @@ function install()
             show_title " now you can execute 'service redisd start' command to start redis "
             ;;
         supervisord)
-	    show_title "Program is Develeping , Please Waiter"
-	    exit 1
-            show_title " start to install nginx "
-            install_supervisord
-            show_title " install nginx over "
+    	    show_title "Program is Develeping , Please Waiter"
+    	    exit 1
+            ;;
+        beanstalkd)
+            show_title " start to install beanstalkd "
+            install_beanstalkd
+            show_title " install beanstalkd over "
+            show_title " now you can execute 'service beanstalkd start' command to start redis "
             ;;
         *)
             echo 
@@ -73,6 +80,6 @@ function install()
 
 }
 
-read -p "Please choice your software name (mysql | php | nginx | redis | supervisord ) : " softwarename
+read -p "Please choice your software name (mysql | php | nginx | redis | supervisord | beanstalkd) : " softwarename
 
 install $softwarename

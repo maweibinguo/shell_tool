@@ -124,33 +124,30 @@ function install_php()
     fi
 
     if [ $(is_had_done 'php_url') -eq 0  ]; then
-        download_to_target_palce "${php_url}" "${php_source_path}"
+        download_to_target_palce "${php_url}" "${php_source_path}" || rollback php_url
     fi
 
     # 解压文件
     cd ${php_source_path}
     local tar_source_package_name=$(echo $php_url|sed 's#.*/##g')
     if [ $(is_had_done 'php_source_package_path') -eq 0 ]; then
-        mv ${tar_source_package_name} ${php_package_name}
-        decompress_file ${php_package_name}
+        mv ${tar_source_package_name} ${php_package_name} && decompress_file ${php_package_name} || rollback php_source_package_path
     fi
 
     # 初始化依赖
     local source_package_name=$(get_tar_top_dir ${php_package_name})
     if [ $(is_had_done 'php_init_base_dependences') -eq 0 ]; then
-        init_php_base_dependences
+        init_php_base_dependences || rollback php_init_base_dependences
     fi
 
     # 编译安装
     local source_package_path="${php_source_path}${source_package_name}"
     if [ $(is_had_done 'php_compile') -eq 0 ]; then
-        compile_php "${source_package_path}" "${php_install_path}"
+        compile_php "${source_package_path}" "${php_install_path}" || rollback php_compile
     fi
 
     # 配置
     if [ $(is_had_done 'php_config') -eq 0 ]; then
-        set -x
-        config_php "${source_package_path}" "${php_install_path}"
-        set +x
+        config_php "${source_package_path}" "${php_install_path}" || rollback php_config
     fi
 }

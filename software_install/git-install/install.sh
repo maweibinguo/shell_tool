@@ -55,29 +55,29 @@ function install_git()
     fi
 
     if [ $(is_had_done 'git_url') -eq 0  ]; then
-        download_to_target_palce "${git_url}" "${git_source_path}"
+        download_to_target_palce "${git_url}" "${git_source_path}" || rollback git_url
     fi
 
     # 解压文件
     cd ${git_source_path}
     local tar_source_package_name=$(echo $git_url|sed 's#.*/##g')
     if [ $(is_had_done 'git_source_package_path') -eq 0 ]; then
-        decompress_file ${tar_source_package_name}
+        decompress_file ${tar_source_package_name} || rollback git_source_package_path
     fi
 
     # 初始化依赖
     if [ $(is_had_done 'git_init_base_dependences') -eq 0 ]; then
-       init_git_base_dependences 
+       init_git_base_dependences || rollback git_init_base_dependences
     fi
 
     # 编译安装
     local package_name_git=$(tar -tf ${tar_source_package_name} |  awk -F "/" '{print $1}'|tail -n  1)
     if [ $(is_had_done 'git_compile') -eq 0 ]; then
-        compile_git ${git_source_path}${package_name_git} ${git_install_path}
+        compile_git ${git_source_path}${package_name_git} ${git_install_path} || rollback git_compile
     fi
 
     # 配置git
     if [ $(is_had_done 'git_config') -eq 0 ]; then
-        config_git ${git_source_path}${package_name_git} ${git_install_path}
+        config_git ${git_source_path}${package_name_git} ${git_install_path} || rollback git_config
     fi
 }

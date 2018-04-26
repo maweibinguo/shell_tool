@@ -84,38 +84,38 @@ function install_mysql()
     fi
 
     if [ $(is_had_done 'mysql_cmake_url') -eq 0  ]; then
-        download_to_target_palce "${cmake_url}" "${mysql_source_path}"
+        download_to_target_palce "${cmake_url}" "${mysql_source_path}" || rollback mysql_cmake_url
     fi
     if [ $(is_had_done 'mysql_url') -eq 0  ]; then
-        download_to_target_palce "${mysql_url}" "${mysql_source_path}"
+        download_to_target_palce "${mysql_url}" "${mysql_source_path}" || rollback mysql_url
     fi
 
     cd ${mysql_source_path}
     local tar_source_package_name_mysql=$(echo ${mysql_url}|sed 's#.*/##g')
     local tar_source_package_name_cmake=$(echo ${cmake_url}|sed 's#.*/##g')
     if [ $(is_had_done 'mysql_source_path') -eq 0 ]; then
-        decompress_file $tar_source_package_name_mysql
+        decompress_file $tar_source_package_name_mysql || rollback mysql_source_path
     fi
 
     if [ $(is_had_done 'mysql_cmake_source_path') -eq 0 ]; then
-        decompress_file $tar_source_package_name_cmake
+        decompress_file $tar_source_package_name_cmake || rollback mysql_cmake_source_path
     fi
 
     if [ $(is_had_done 'mysql_init_base_dependences') -eq 0 ]; then
-        init_mysql_base_dependences
+        init_mysql_base_dependences || rollback mysql_init_base_dependences
     fi
 
     local package_name_mysql=$(tar -tf ${tar_source_package_name_mysql} |  awk -F "/" '{print $1}'|tail -n  1)
     local package_name_cmake=$(tar -tf ${tar_source_package_name_cmake} |  awk -F "/" '{print $1}'|tail -n  1)
     if [ $(is_had_done 'mysql_compile_cmake') -eq 0 ]; then
-        compile_cmake ${mysql_source_path}${package_name_cmake}
+        compile_cmake ${mysql_source_path}${package_name_cmake} || rollback mysql_compile_cmake
     fi
 
     if [ $(is_had_done 'mysql_compile') -eq 0 ]; then
-        compile_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path}
+        compile_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path} || rollback mysql_compile
     fi
 
     if [ $(is_had_done 'mysql_config') -eq 0 ]; then
-        config_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path}
+        config_mysql ${mysql_source_path}${package_name_mysql} ${mysql_install_path} || rollback mysql_config
     fi
 }

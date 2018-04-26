@@ -19,5 +19,13 @@ function download_to_target_palce()
 {
     download_url=$1
     hold_dir=$2
-    wget -c -P $hold_dir  $download_url
+    while ! wget -c -P $hold_dir  $download_url; do
+        ((retry_num++))
+        if (( retry_num >=2 )); then
+                show_error "download file ${download_url} failed"
+                exit
+        else
+            wget -c -P $hold_dir  $download_url
+        fi
+    done
 }

@@ -58,29 +58,29 @@ function install_redis()
     fi
 
     if [ $(is_had_done 'redis_url') -eq 0  ]; then
-        download_to_target_palce "${redis_url}" "${redis_source_path}"
+        download_to_target_palce "${redis_url}" "${redis_source_path}" || rollback 'redis_url'
     fi
 
     # 解压文件
     cd ${redis_source_path}
     local tar_source_package_name=$(echo $redis_url|sed 's#.*/##g')
     if [ $(is_had_done 'redis_source_package_path') -eq 0 ]; then
-        decompress_file ${tar_source_package_name}
+        decompress_file ${tar_source_package_name} || rollback 'redis_source_package_path'
     fi
 
     # 初始化依赖
     if [ $(is_had_done 'redis_init_base_dependences') -eq 0 ]; then
-       init_redis_base_dependences 
+       init_redis_base_dependences || rollback 'redis_init_base_dependences' 
     fi
 
     # 编译安装
     local package_name_redis=$(tar -tf ${tar_source_package_name} |  awk -F "/" '{print $1}'|tail -n  1)
     if [ $(is_had_done 'redis_compile') -eq 0 ]; then
-        compile_redis ${redis_source_path}${package_name_redis} ${redis_install_path}
+        compile_redis ${redis_source_path}${package_name_redis} ${redis_install_path} || rollback 'redis_compile'
     fi
 
     # 配置redis
     if [ $(is_had_done 'redis_config') -eq 0 ]; then
-        config_redis ${redis_source_path}${package_name_redis} ${redis_install_path}
+        config_redis ${redis_source_path}${package_name_redis} ${redis_install_path} || rollback 'redis_config'
     fi
 }

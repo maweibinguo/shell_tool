@@ -78,3 +78,13 @@ redis[1]="/usr/local/redis/3.2.9/"
 
 # redis 存放地址
 redis[2]="/usr/local/src/redis/"
+
+###################
+# beanstalked配置 # 
+###################
+
+# redis 源码包下载地址
+beanstalkd[0]="https://github.com/kr/beanstalkd/archive/master.zip"
+
+# redis 存放地址
+beanstalkd[1]="/usr/local/src/beanstalkd/"

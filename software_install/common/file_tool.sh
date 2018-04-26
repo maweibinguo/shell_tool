@@ -48,6 +48,9 @@ function decompress_file()
             *.tar.gz)
                 tar xvzf $file_name
             ;;
+            *.zip)
+                unzip $file_name
+            ;;
              *)              
                echo "$file_name cannot be extract"
             ;; 
